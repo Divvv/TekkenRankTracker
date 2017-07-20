@@ -1,0 +1,29 @@
+body {
+        font-family: 'Rubik', sans-serif;
+        font-size: 18px;
+        color: whitesmoke;
+      }
+
+#main-div {
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.2);
+
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:1000px;
+    margin-top: -500px; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+}
+
+select {
+    background-color: grey;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* nikotekken */

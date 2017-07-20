@@ -1,0 +1,72 @@
+<!doctype html>
+<html ng-app="rankApp">
+
+<head>
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+  <script src="app.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
+  <link href="app.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <div id="main-div" ng-controller="RankController as rankApp">
+
+    <span>Select your rank: </span>
+    <select ng-model="rankApp.selectedRank" ng-change="rankApp.selectRank()" ng-options="rank.Name for rank in rankApp.ranks">
+      <option value=""></option>
+    </select>
+    <span>Note: points will be reset to 0. Select a rank right after a demotion/promotion.</span>
+    <br><br>
+
+    <span>Current rank: <img ng-src="{{rankApp.currentRank().PicLink}}"/><br>
+    <span>Next rank: <img ng-src="{{rankApp.nextRank().PicLink}}"/><br><br>
+    <span>Current points: {{rankApp.currentPoints}}</span><br>
+    <span>Points to promo: {{ rankApp.pointsToPromo() }}</span><br>
+    <span>Points before demo: {{ rankApp.pointsToDemo() }}</span><br><br>
+   
+    
+
+    <!--<span>[D]</span>
+    <span ng-repeat="n in rankApp.pointRangeBefore()">[_]</span>
+    <span ng-show="!rankApp.promoChance() && !rankApp.demoChance()">[x]</span>
+    <span ng-repeat="n in rankApp.pointRangeAfter()">[_]</span>
+    <span>[P]</span>-->
+
+    Promo progress : <uib-progressbar style="width: 400px;" class="progress-striped active" max="rankApp.currentRank().RankType.Diff" value="rankApp.currentPoints" type="success"><i>{{rankApp.currentPoints}} / {{rankApp.currentRank().RankType.Diff}}</i></uib-progressbar>
+    Demo progress : <uib-progressbar style="width: 400px;" class="progress-striped active" max="-rankApp.currentRank().RankType.Diff" value="rankApp.currentPoints" type="danger"><i>{{rankApp.currentPoints}} / -{{rankApp.currentRank().RankType.Diff}}</i></uib-progressbar>
+
+    <h4>Next match opponent: <span ng-show="rankApp.promoChance()" class="label label-success">Promotion match</span> <span ng-show="rankApp.demoChance()" class="label label-danger">Demotion match</span></h4>
+    <form ng-init="rankApp.pointsForNextMatch = 1">
+      <label>
+            <input ng-checked="true" type="radio" ng-model="rankApp.pointsForNextMatch" value="1">
+            <img ng-src="{{rankApp.currentRank().PicLink}}"/>  1pt
+        </label><br/>
+      <label>
+            <input type="radio" ng-model="rankApp.pointsForNextMatch" value="0.5">
+            <img ng-src="{{rankApp.nextRank().PicLink}}"/> / <img ng-src="{{rankApp.previousRank().PicLink}}"/> 0.5pts
+        </label><br/>
+      <label>
+            <input type="radio" ng-model="rankApp.pointsForNextMatch" value="0.25">
+            <img ng-src="{{rankApp.twoRanksAbove().PicLink}}"/> / <img ng-src="{{rankApp.twoRanksBelow().PicLink}}"/>  0.25pts
+        </label><br/>
+      <label>
+            <input type="radio" ng-model="rankApp.pointsForNextMatch" value="0.125">
+            <img ng-src="{{rankApp.threeRanksAbove().PicLink}}"/> / <img ng-src="{{rankApp.threeRanksBelow().PicLink}}"/>  0.125pts
+        </label><br/>
+    </form>
+    <button ng-click="rankApp.win()" class="btn-success btn" type="submit">Win</button>
+    <button ng-click="rankApp.loss()" class="btn-danger btn" type="submit">Loss</button>
+  </div>
+</body>
+
+
+</html>
